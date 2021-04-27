@@ -12,6 +12,7 @@ function onInit() {
             console.log('Map is ready');
         })
         .catch(() => console.log('Error: cannot init map'));
+    renderSavedLocations()
 }
 
 function addEventListenrs() {
@@ -55,4 +56,5 @@ function getPosition() {
 
 function renderSavedLocations() {
     const Locations = locService.getLocs()
+    console.log('Locations', Locations)
 }
