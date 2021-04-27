@@ -17,28 +17,27 @@ function onInit() {
 }
 
 function addEventListenrs() {
-    document.querySelector('.btn-pan').addEventListener('click', (ev) => {
-        console.log('Panning the Map');
-        mapService.panTo(35.0, 119.6917);
+    document.querySelector('.btn-search-location').addEventListener('click', (ev) => {
+        let locationName = document.querySelector('.input-location').value
+        mapService.getLocationCoords(locationName)
+        .then(res=>{
+        const locLat =res.results[0].geometry.location.lat
+        const locLng =res.results[0].geometry.location.lng
+        mapService.panTo(locLat,locLng)
+        locService.addLoc(locLat,locLng)
+        })
     })
     document.querySelector('.btn-add-marker').addEventListener('click', (ev) => {
         console.log('Adding a marker');
         mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
     })
-    document.querySelector('.btn-get-locs').addEventListener('click', (ev) => {
-        locService.getLocs()
-            .then(locs => {
-                console.log('Locations:', locs)
-                document.querySelector('.locs').innerText = JSON.stringify(locs)
-            })
-
-    })
-    document.querySelector('.btn-user-pos').addEventListener('click', (ev) => {
+    document.querySelector('.btn-my-location').addEventListener('click', (ev) => {
         getPosition()
             .then(pos => {
                 console.log('User position is:', pos.coords);
-                document.querySelector('.user-pos').innerText =
-                    `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+                // document.querySelector('.user-pos').innerText =
+                //     `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+                mapService.panTo(pos.coords.latitude, pos.coords.longitude);
             })
             .catch(err => {
                 console.log('err!!!', err);
