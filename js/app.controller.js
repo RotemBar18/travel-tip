@@ -4,7 +4,7 @@ import { mapService } from './services/map.service.js'
 window.onload = onInit;
 
 function onInit() {
-    console.log('hii');
+    console.log();
     addEventListenrs();
     mapService.initMap()
         .then(() => {
