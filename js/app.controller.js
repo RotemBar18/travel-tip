@@ -1,10 +1,11 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
 
+
 window.onload = onInit;
 
 function onInit() {
-    console.log();
+    console.log('hi');
     addEventListenrs();
     mapService.initMap()
         .then(() => {
