@@ -55,6 +55,11 @@ function getPosition() {
 }
 
 function renderSavedLocations() {
-    const Locations = locService.getLocs()
-    console.log('Locations', Locations)
+    const prm = locService.getLocs()
+    prm.then(locations => {
+        const strHtml = locations.map(location => {
+            
+        })
+
+    })
 }
