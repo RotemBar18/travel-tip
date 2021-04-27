@@ -1,7 +1,10 @@
-import { storageService } from './storage.service.js'
+import {
+    storageService
+} from './storage.service.js'
 export const locService = {
     getLocs,
-    removeLoc
+    removeLoc,
+    addLoc
 }
 const LOCATIONS_KEY = 'locations';
 
@@ -14,7 +17,7 @@ function getLocs() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(locs);
-        }, 2000);
+        }, 500);
     });
 }
 
@@ -27,4 +30,17 @@ function removeLoc(locId) {
 
 }
 
+function addLoc(name, lat, lng) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            locs.push({
+                'name': name,
+                'lat': lat,
+                'lng': lng
+            });
+            storageService.saveToStorage(LOCATIONS_KEY, locs);
+            resolve(locs);
+        }, 500);
+    });
+}
 
