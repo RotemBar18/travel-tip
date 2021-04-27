@@ -1,10 +1,15 @@
+import { locService } from './loc.service.js';
+import { appController } from '../app.controller.js';
+
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    getLocationName
 }
 
 var gMap;
+var gGeoCoder;
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap');
@@ -18,28 +23,15 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                         lng: lng
                     },
                     zoom: 15
-                })
-            let infoWindow = new google.maps.InfoWindow({
-                content: "Click the map to get Lat/Lng!",
-                position: {
-                    lat: lat,
-                    lng: lng
-                },
-            });
+                });
             // Configure the click listener.
             gMap.addListener("click", (mapsMouseEvent) => {
-                // Close the current InfoWindow.
-                infoWindow.close();
-                // Create a new InfoWindow.
-                infoWindow = new google.maps.InfoWindow({
-                    position: mapsMouseEvent.latLng,
-                });
-                infoWindow.setContent(
-                    JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
-                );
-                infoWindow.open(gMap);
+                locService.addLoc(mapsMouseEvent.latLng.lat(), mapsMouseEvent.latLng.lng());
+                appController.renderSavedLocations();
             });
-        })
+            gGeoCoder = new google.maps.Geocoder();
+            console.log(gGeoCoder);
+        });
 }
 
 function addMarker(loc) {
@@ -56,7 +48,20 @@ function panTo(lat, lng) {
     gMap.panTo(laLatLng);
 }
 
-
+function getLocationName(lat, lng) {
+    return new Promise((resolve, reject) => {
+        gGeoCoder.geocode(
+            { 
+                location: new google.maps.LatLng(lat, lng)
+            },
+            (result, status) => {
+                if(status == 'OK' && result[0]) {
+                    resolve(result[0].formatted_address);
+                }
+                reject('Could not reverse geocode');
+            });
+    });
+}
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()

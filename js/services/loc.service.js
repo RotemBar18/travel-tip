@@ -1,5 +1,7 @@
 import { storageService } from './storage.service.js';
 import { utilService } from './util.service.js';
+import { mapService } from './map.service.js';
+
 export const locService = {
     getLocs,
     removeLoc,
@@ -26,7 +28,7 @@ function removeLoc(locId) {
         return loc.id === locId
     })
     gLocs.splice(currLocIdx, 1)
-    storageService.saveToStorage(LOCATIONS_KEY, gLocs)
+    storageService.saveToStorage(LOCATIONS_KEY, gLocs);
 
 }
 
@@ -36,14 +38,15 @@ function addLoc(lat, lng) {
         lat,
         lng
     };
-    getLocationName(lat, lng)
-        .then(res => newLoc.name = res)
-    gLocs.push(newLoc);
-    storageService.saveToStorage(LOCATIONS_KEY, gLocs);
-
-}
-
-function getLocationName(lat,lng){
+    mapService.getLocationName(lat, lng)
+        .then(res => {
+            newLoc.name = res;
+            gLocs.push(newLoc);
+            storageService.saveToStorage(LOCATIONS_KEY, gLocs);
+        })
+        .catch(error => 
+            console.log(error))
+    
 
 }
 
