@@ -62,14 +62,14 @@ function renderSavedLocations() {
         let strHtml = locations.map(location => {
             return `<div class="location">
                 <h2 class="location-name">${location.name}</h2>
-                <button class="btn ${location.id}" data-lat="${location.lat}" data-lng="${location.lng}" ${location.id}">GO</button>
+                <button class="go-btn ${location.id}" data-lat="${location.lat}" data-lng="${location.lng}" ${location.id}">GO</button>
                 <button class="delete-btn ${location.id}" data-id="${location.id}">delete</button>
             </div>`
         })
 
         strHtml = strHtml.join('')
         document.querySelector('.locs').innerHTML = strHtml
-        document.querySelectorAll('.btn').forEach(elBtn => {
+        document.querySelectorAll('.go-btn').forEach(elBtn => {
             console.log('elBtn', elBtn)
             elBtn.addEventListener('click', (ev) => {
                 mapService.panTo(elBtn.dataset.lat, elBtn.dataset.lng);
