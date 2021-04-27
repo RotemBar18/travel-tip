@@ -56,10 +56,34 @@ function getPosition() {
 }
 
 function renderSavedLocations() {
-    const prm = locService.getLocs()
-    prm.then(locations => {
-        const strHtml = locations.map(location => {
-            
+    const locationPrm = locService.getLocs()
+    locationPrm.then(locations => {
+        let strHtml = locations.map(location => {
+            return `<div class="location">
+                <h2 class="location-name">${location.name}</h2>
+                <button class="btn ${location.id}" data-lat="${location.lat}" data-lng="${location.lng}" ${location.id}">GO</button>
+                <button class="delete-btn ${location.id}" data-id="${location.id}">delete</button>
+            </div>`
+        })
+
+        strHtml = strHtml.join('')
+        document.querySelector('.locs').innerHTML = strHtml
+        document.querySelectorAll('.btn').forEach(elBtn => {
+            console.log('elBtn', elBtn)
+            elBtn.addEventListener('click', (ev) => {
+                mapService.panTo(elBtn.dataset.lat, elBtn.dataset.lng);
+
+            })
+
+        })
+        document.querySelectorAll('.delete-btn').forEach(elBtn => {
+            console.log('elBtn', elBtn)
+            elBtn.addEventListener('click', (ev) => {
+                locService.removeLoc(elBtn.dataset.id);
+                renderSavedLocations()
+
+            })
+
         })
 
     })

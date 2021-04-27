@@ -5,22 +5,16 @@ import {
     utilService
 } from './util.service.js';
 export const locService = {
-    getLocs
-};
-
+    getLocs,
+    removeLoc,
+    addLoc
+}
 const LOCATIONS_KEY = 'locations';
 
-var locs = storageService.loadFromStorage(LOCATIONS_KEY) || [{
-        name: 'Loc1',
-        lat: 32.047104,
-        lng: 34.832384
-    },
-    {
-        name: 'Loc2',
-        lat: 32.047201,
-        lng: 34.832581
-    }
-];
+var locs = storageService.loadFromStorage(LOCATIONS_KEY) || [
+    { id: 'aaa', name: 'Loc1', lat: 33.047104, lng: 34.832384 },
+    { id: 'bbb', name: 'Loc2', lat: 32.047201, lng: 34.832581 }
+]
 
 function getLocs() {
     return new Promise((resolve, reject) => {
@@ -28,6 +22,15 @@ function getLocs() {
             resolve(locs);
         }, 500);
     });
+}
+
+function removeLoc(locId) {
+    let currLocIdx = locs.findIndex(loc => {
+        return loc.id === locId
+    })
+    locs.splice(currLocIdx, 1)
+    storageService.saveToStorage(LOCATIONS_KEY,locs)
+
 }
 
 function addLoc(name, lat, lng) {
@@ -46,12 +49,3 @@ function addLoc(name, lat, lng) {
     });
 }
 
-function removeLoc(index) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            locs.splice(index, 1);
-            storageService.saveToStorage(LOCATIONS_KEY, locs);
-            resolve(locs);
-        }, 500);
-    });
-}
