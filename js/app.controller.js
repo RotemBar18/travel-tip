@@ -17,7 +17,7 @@ function onInit() {
 function addEventListenrs() {
     document.querySelector('.btn-pan').addEventListener('click', (ev) => {
         console.log('Panning the Map');
-        mapService.panTo(35.6895, 139.6917);
+        mapService.panTo(35.0, 119.6917);
     })
     document.querySelector('.btn-add-marker').addEventListener('click', (ev) => {
         console.log('Adding a marker');
@@ -53,3 +53,6 @@ function getPosition() {
     })
 }
 
+function renderSavedLocations() {
+    const Locations = locService.getLocs()
+}
