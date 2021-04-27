@@ -1,9 +1,12 @@
 import {
     storageService
-} from './storage.service.js'
+} from './storage.service.js';
+import {
+    utilService
+} from './util.service.js';
 export const locService = {
     getLocs
-}
+};
 
 const LOCATIONS_KEY = 'locations';
 
@@ -30,11 +33,13 @@ function getLocs() {
 function addLoc(name, lat, lng) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            locs.push({
+            var newLoc = {
+                'id': utilService.makeId(),
                 'name': name,
                 'lat': lat,
                 'lng': lng
-            });
+            };
+            locs.push(newLoc);
             storageService.saveToStorage(LOCATIONS_KEY, locs);
             resolve(locs);
         }, 500);
