@@ -1,5 +1,3 @@
-
-
 export const mapService = {
     initMap,
     addMarker,
@@ -15,10 +13,32 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
             console.log('google available');
             gMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                center: { lat, lng },
-                zoom: 15
-            })
-            console.log('Map!', gMap);
+                    center: {
+                        lat: lat,
+                        lng: lng
+                    },
+                    zoom: 15
+                })
+            let infoWindow = new google.maps.InfoWindow({
+                content: "Click the map to get Lat/Lng!",
+                position: {
+                    lat: lat,
+                    lng: lng
+                },
+            });
+            // Configure the click listener.
+            gMap.addListener("click", (mapsMouseEvent) => {
+                // Close the current InfoWindow.
+                infoWindow.close();
+                // Create a new InfoWindow.
+                infoWindow = new google.maps.InfoWindow({
+                    position: mapsMouseEvent.latLng,
+                });
+                infoWindow.setContent(
+                    JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+                );
+                infoWindow.open(gMap);
+            });
         })
 }
 
