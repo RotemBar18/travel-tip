@@ -1,6 +1,5 @@
 import { locService } from './services/loc.service.js';
 import { mapService } from './services/map.service.js';
-import { utilService } from './services/util.service.js';
 
 export const appController = {
     renderSavedLocations
@@ -82,8 +81,7 @@ function renderSavedLocations() {
             console.log('elBtn', elBtn)
             elBtn.addEventListener('click', (ev) => {
                 locService.removeLoc(elBtn.dataset.id);
-                renderSavedLocations()
-
+                renderSavedLocations();
             })
 
         })
