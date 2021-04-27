@@ -52,8 +52,13 @@ function addMarker(loc) {
 }
 
 function panTo(lat, lng) {
+    console.log('lng', +lng)
+    console.log('lat', +lat)
     var laLatLng = new google.maps.LatLng(lat, lng);
     gMap.panTo(laLatLng);
+    lat = +lat
+    lng = +lng
+    addMarker({lat,lng})
 }
 
 function getLocationName(lat, lng) {
